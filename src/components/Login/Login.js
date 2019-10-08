@@ -65,6 +65,7 @@ export default class pass extends Component {
         </Form>
         <Button
           success
+          block
           disabled={this.state.buttonDisabled}
           style={{
             borderWidth: 1,
