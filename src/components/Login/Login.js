@@ -3,6 +3,10 @@ import {Text, Form, Item, Input, Button, Icon} from 'native-base';
 import {View} from 'react-native';
 
 export default class pass extends Component {
+  static navigationOptions = {
+    header: null,
+  };
+
   constructor() {
     super();
     this.state = {

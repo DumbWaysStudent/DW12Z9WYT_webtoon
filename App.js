@@ -12,7 +12,6 @@
 
 // export default App;
 
-import React from 'react';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 
@@ -20,21 +19,27 @@ import Login from './src/components/Login/Login';
 import ForYou from './src/components/ForYou/ForYou';
 import Favourite from './src/components/Favourite/Favourite';
 import profile from './src/components/Profile/profile';
+import DetailScreen from './src/components/DetailScreen/DetailScreen';
 
-const AuthStack = createStackNavigator({Login: Login}, {headerMode: 'none'});
+const AuthStack = createStackNavigator({Login: Login});
 const AppStack = createStackNavigator(
-  {ForYou: ForYou, Favourite: Favourite, profile: profile},
-  {headerMode: 'none'},
+  {
+    ForYou: ForYou,
+    Favourite: Favourite,
+    profile: profile,
+    DetailScreen: DetailScreen,
+  },
+  // {headerMode: 'none'},
 );
 
 export default createAppContainer(
   createSwitchNavigator(
     {
       App: AppStack,
-      Auth: AuthStack,
+      //Auth: AuthStack,
     },
     {
-      initialRouteName: 'Auth',
+      initialRouteName: 'App',
     },
   ),
 );

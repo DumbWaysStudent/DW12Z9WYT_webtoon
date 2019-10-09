@@ -1,12 +1,36 @@
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
-import {Footer, FooterTab, Button, Icon} from 'native-base';
+import {
+  Footer,
+  FooterTab,
+  Button,
+  Icon,
+  Content,
+  Container,
+  Header,
+} from 'native-base';
 
 export default class Profile extends Component {
   render() {
     return (
-      <View>
-        <Text> Profile Page</Text>
+      <Container>
+        <Header style={{backgroundColor: 'white', borderBottomWidth: 2}}>
+          <View>
+            <Text> Profile Page</Text>
+            <Icon name="edit" />
+          </View>
+        </Header>
+
+        <Content>
+          <View>
+            <Icon name="profile" />
+            <View>
+              <Text>My Webtoon Creation</Text>
+              <Text>Log Out</Text>
+            </View>
+          </View>
+        </Content>
+
         <Footer>
           <FooterTab style={{backgroundColor: 'white', borderTopWidth: 1}}>
             <Button onPress={() => this.props.navigation.navigate('ForYou')}>
@@ -23,7 +47,7 @@ export default class Profile extends Component {
             </Button>
           </FooterTab>
         </Footer>
-      </View>
+      </Container>
     );
   }
 }

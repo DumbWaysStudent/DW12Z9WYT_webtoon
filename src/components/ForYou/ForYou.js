@@ -14,7 +14,13 @@ import {
   Icon,
   Body,
 } from 'native-base';
-import {StyleSheet, ScrollView, Dimensions, Image} from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import Carousel from 'react-native-banner-carousel';
 
 const BannerWidth = Dimensions.get('window').width;
@@ -54,17 +60,26 @@ export default class ForYou extends Component {
     };
   }
 
+  static navigationOptions = {header: null};
+
   renderPage(image, index) {
     return (
       <View key={index} style={{margin: 3}}>
-        <Image
-          style={{
-            width: BannerWidth,
-            height: BannerHeight,
-            resizeMode: 'contain',
-          }}
-          source={{uri: image}}
-        />
+        <TouchableOpacity
+          onPress={() =>
+            this.props.navigation.navigate('DetailScreen', {
+              title: this.state.banners.title,
+            })
+          }>
+          <Image
+            style={{
+              width: BannerWidth,
+              height: BannerHeight,
+              resizeMode: 'contain',
+            }}
+            source={{uri: image}}
+          />
+        </TouchableOpacity>
       </View>
     );
   }
@@ -115,11 +130,19 @@ export default class ForYou extends Component {
                     alignSelf: 'center',
                   }}>
                   <View>
-                    <Image
-                      style={{width: 75, height: 75, resizeMode: 'contain'}}
-                      // Gambar harus selalu diberi height dan weight, jika tidak maka gambar tidak muncul
-                      source={{uri: image.image}}
-                    />
+                    <TouchableOpacity
+                      onPress={() =>
+                        this.props.navigation.navigate('DetailScreen', {
+                          title: image.title,
+                          image: image.image,
+                        })
+                      }>
+                      <Image
+                        style={{width: 75, height: 75, resizeMode: 'contain'}}
+                        // Gambar harus selalu diberi height dan weight, jika tidak maka gambar tidak muncul
+                        source={{uri: image.image}}
+                      />
+                    </TouchableOpacity>
                   </View>
                   <View>
                     <Text style={{fontSize: 13}}>{image.title}</Text>
@@ -142,10 +165,15 @@ export default class ForYou extends Component {
             {this.state.banners.map(image => (
               <View style={{flex: 1, width: 130}}>
                 <Row>
-                  <Image
-                    style={{width: 75, height: 75, margin: 7, borderWidth: 5}}
-                    source={{uri: image.image}}
-                  />
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.props.navigation.navigate('DetailScreen')
+                    }>
+                    <Image
+                      style={{width: 75, height: 75, margin: 7, borderWidth: 5}}
+                      source={{uri: image.image}}
+                    />
+                  </TouchableOpacity>
                   <View style={{marginLeft: 13, justifyContent: 'center'}}>
                     <Text
                       style={{
