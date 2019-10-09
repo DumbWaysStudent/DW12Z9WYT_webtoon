@@ -41,7 +41,7 @@ export default class DetailEp extends Component {
         <Icon
           type="FontAwesome"
           name="share-alt"
-          onPress={() => Share.share({message: '???'})}
+          onPress={() => Share.share({message: '????'})}
         />
       ),
     };
