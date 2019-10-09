@@ -19,6 +19,10 @@ export default class DetailScreen extends Component {
           date: '07 October 2019',
           image:
             'https://cdn.imagecomics.com/assets/i/releases/3344/rose-vol-1-tp_65f5bec524.jpg',
+          content: [
+            'https://2.bp.blogspot.com/jXtASSEPGQ8rQCyfOxQPwWdIFBWByzZ4yJMbvO3_MlXVu-mvtg7IE8JIvzuln_elP7u62C7WVQ19WLeICUUhxyS05bYBus9RAedX7xg2gieWoVMSy5KD-PxVsIAPbkgv5coYZJtCAw=s1600',
+            'https://2.bp.blogspot.com/ZEzW7QKkvF1FcYUzLBiJlcluPtAVXV5GLUreHLgdsAI5eqknV1ONNZEuTJxFUJ0OgP40MiLGYpP2Q-7cjnELPBJhExRnjuqFchrO2rt6bMDgDp8GWa9Xoz8IH_OUOKcI8Pf1XaopLA=s1600',
+          ],
         },
         {
           ep: 'Ep.3',
@@ -42,6 +46,7 @@ export default class DetailScreen extends Component {
     };
   }
 
+  //Settingan untuk header
   static navigationOptions = ({navigation}) => {
     return {
       title: navigation.getParam('title'),
@@ -51,6 +56,7 @@ export default class DetailScreen extends Component {
       headerTitleStyle: {
         fontWeight: 'bold',
       },
+      // untuk menanmpilkan ikon header share di sebelah kanan
       headerRight: (
         <Icon
           type="FontAwesome"
@@ -86,7 +92,16 @@ export default class DetailScreen extends Component {
               renderItem={({item}) => (
                 <View key={item.image}>
                   <Row style={{margin: 11}}>
-                    <TouchableOpacity style={{borderWidth: 2, margin: 7}}>
+                    <TouchableOpacity
+                      style={{borderWidth: 2, margin: 7}}
+                      onPress={() =>
+                        this.props.navigation.navigate('DetailEp', {
+                          arr: item.details,
+                          title: item.ep,
+                          pic: item.image,
+                          image: item.content,
+                        })
+                      }>
                       <Image
                         style={{width: 56, height: 85, resizeMode: 'contain'}}
                         source={{uri: item.image}}
