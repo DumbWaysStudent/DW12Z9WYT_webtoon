@@ -71,7 +71,8 @@ export default class pass extends Component {
             borderWidth: 1,
             alignItems: 'center',
             justifyContent: 'center',
-          }}>
+          }}
+          onPress={() => this.props.navigation.navigate('ForYou')}>
           <Text>Login</Text>
         </Button>
       </View>
