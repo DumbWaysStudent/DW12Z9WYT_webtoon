@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, Image} from 'react-native';
 import {
   Footer,
   FooterTab,
@@ -8,27 +8,77 @@ import {
   Content,
   Container,
   Header,
+  Left,
+  Right,
+  Title,
 } from 'native-base';
 
 export default class Profile extends Component {
+  static navigationOptions = {header: null};
   render() {
     return (
       <Container>
-        <Header style={{backgroundColor: 'white', borderBottomWidth: 2}}>
-          <View>
-            <Text> Profile Page</Text>
-            <Icon name="edit" />
-          </View>
+        <Header
+          style={{
+            backgroundColor: 'white',
+            borderBottomWidth: 1,
+            borderBottomColor: 'black',
+            marginBottom: 8,
+          }}>
+          <Left>
+            <Title style={{color: 'black'}}>Profile</Title>
+          </Left>
+          <Right>
+            <Icon
+              name="md-create"
+              onPress={() => {
+                alert('edit');
+              }}
+              style={{marginRight: 10, color: 'orange'}}
+            />
+          </Right>
         </Header>
 
         <Content>
           <View>
-            <Icon name="profile" />
-            <View>
-              <Text>My Webtoon Creation</Text>
-              <Text>Log Out</Text>
-            </View>
+            <Image
+              source={{
+                uri:
+                  'https://icon-library.net/images/profile-png-icon/profile-png-icon-1.jpg',
+              }}
+              style={{
+                alignSelf: 'center',
+                height: 200,
+                width: 200,
+                borderRadius: 100,
+              }}
+            />
           </View>
+          <Text style={{alignSelf: 'center', fontSize: 22, fontWeight: 'bold'}}>
+            Your Name
+          </Text>
+          <Button
+            onPress={() => {
+              alert('webtoon creation');
+            }}
+            style={{
+              backgroundColor: 'white',
+              marginTop: 5,
+              borderWidth: 1,
+              borderColor: 'black',
+            }}>
+            <Text style={{color: 'black'}}>My WebToon creation</Text>
+          </Button>
+          <Button
+            onPress={() => this.props.navigation.navigate('Login')}
+            style={{
+              backgroundColor: 'white',
+              marginTop: 5,
+              borderWidth: 1,
+              borderColor: 'black',
+            }}>
+            <Text style={{color: 'black'}}>Logout</Text>
+          </Button>
         </Content>
 
         <Footer>
