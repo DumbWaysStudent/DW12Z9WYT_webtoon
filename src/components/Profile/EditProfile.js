@@ -9,7 +9,8 @@ import {
   Right,
   Icon,
   Title,
-  Thumbnail,
+  Footer,
+  FooterTab,
   View,
 } from 'native-base';
 import {Image, StyleSheet, SafeAreaView, TouchableOpacity} from 'react-native';
@@ -63,6 +64,23 @@ export default class Profile extends Component {
             <Text style={{color: 'black'}}>Your Name</Text>
           </Button>
         </Content>
+
+        <Footer>
+          <FooterTab style={{backgroundColor: 'white', borderTopWidth: 1}}>
+            <Button onPress={() => this.props.navigation.navigate('ForYou')}>
+              <Icon name="apps" style={{color: 'black'}} />
+              <Text style={{color: 'black'}}>For You</Text>
+            </Button>
+            <Button onPress={() => this.props.navigation.navigate('Favourite')}>
+              <Icon name="star" style={{color: 'black'}} />
+              <Text style={{color: 'black'}}>Faourites</Text>
+            </Button>
+            <Button onPress={() => this.props.navigation.navigate('profile')}>
+              <Icon name="person" style={{color: 'black'}} />
+              <Text style={{color: 'black'}}>profile</Text>
+            </Button>
+          </FooterTab>
+        </Footer>
       </Container>
     );
   }
