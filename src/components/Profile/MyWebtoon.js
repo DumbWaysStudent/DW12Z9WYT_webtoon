@@ -24,7 +24,6 @@ export default class MyWebtoon extends Component {
       headerTitleStyle: {
         fontWeight: 'bold',
       },
-      // untuk menanmpilkan ikon header share di sebelah kanan
     };
   };
 
@@ -86,7 +85,7 @@ export default class MyWebtoon extends Component {
           active={false}
           style={{backgroundColor: 'yellow'}}
           position="bottomRight"
-          onPress={() => alert('Add new webtoon')}>
+          onPress={() => this.props.navigation.navigate('CreateWebtoon')}>
           <Icon type="FontAwesome" name="plus" />
         </Fab>
       </Container>

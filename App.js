@@ -23,6 +23,7 @@ import DetailScreen from './src/components/DetailScreen/DetailScreen';
 import DetailEp from './src/components/DetailEp/DetailEp';
 import EditProfile from './src/components/Profile/EditProfile';
 import MyWebtoon from './src/components/Profile/MyWebtoon';
+import CreateWebtoon from './src/components/Profile/CreateWebtoon';
 
 const AuthStack = createStackNavigator({Login: Login});
 const AppStack = createStackNavigator(
@@ -34,6 +35,7 @@ const AppStack = createStackNavigator(
     DetailScreen: DetailScreen,
     DetailEp: DetailEp,
     MyWebtoon: MyWebtoon,
+    CreateWebtoon: CreateWebtoon,
   },
   // {headerMode: 'none'},
 );
