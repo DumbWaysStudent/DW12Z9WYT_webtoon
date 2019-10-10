@@ -31,9 +31,7 @@ export default class Profile extends Component {
           <Right>
             <Icon
               name="md-create"
-              onPress={() => {
-                alert('edit');
-              }}
+              onPress={() => this.props.navigation.navigate('EditProfile')}
               style={{marginRight: 10, color: 'orange'}}
             />
           </Right>
@@ -58,9 +56,7 @@ export default class Profile extends Component {
             Your Name
           </Text>
           <Button
-            onPress={() => {
-              alert('webtoon creation');
-            }}
+            onPress={() => this.props.navigation.navigate('MyWebtoon')}
             style={{
               backgroundColor: 'white',
               marginTop: 5,
