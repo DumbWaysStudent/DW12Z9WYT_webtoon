@@ -24,21 +24,20 @@ import DetailEp from './src/components/DetailEp/DetailEp';
 import EditProfile from './src/components/Profile/EditProfile';
 import MyWebtoon from './src/components/Profile/MyWebtoon';
 import CreateWebtoon from './src/components/Profile/CreateWebtoon';
+import CreateEpi from './src/components/Profile/CreateEpisode';
 
 const AuthStack = createStackNavigator({Login: Login});
-const AppStack = createStackNavigator(
-  {
-    ForYou: ForYou,
-    Favourite: Favourite,
-    profile: profile,
-    EditProfile: EditProfile,
-    DetailScreen: DetailScreen,
-    DetailEp: DetailEp,
-    MyWebtoon: MyWebtoon,
-    CreateWebtoon: CreateWebtoon,
-  },
-  // {headerMode: 'none'},
-);
+const AppStack = createStackNavigator({
+  ForYou: ForYou,
+  Favourite: Favourite,
+  profile: profile,
+  EditProfile: EditProfile,
+  DetailScreen: DetailScreen,
+  DetailEp: DetailEp,
+  MyWebtoon: MyWebtoon,
+  CreateWebtoon: CreateWebtoon,
+  CreateEpi: CreateEpi,
+});
 
 export default createAppContainer(
   createSwitchNavigator(

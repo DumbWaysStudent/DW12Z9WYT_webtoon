@@ -15,7 +15,7 @@ import {
 } from 'native-base';
 import {Image, Share, FlatList, TouchableOpacity} from 'react-native';
 
-export default class CreateWebtoon extends Component {
+export default class CreateEpi extends Component {
   static navigationOptions = {header: null};
 
   constructor() {
@@ -23,13 +23,13 @@ export default class CreateWebtoon extends Component {
     this.state = {
       details: [
         {
-          ep: 'Ep.2',
+          ep: '2. Introduction',
           date: '05 October 2019',
           image:
             'https://images-na.ssl-images-amazon.com/images/I/61mv4EJj9wL._SX331_BO1,204,203,200_.jpg',
         },
         {
-          ep: 'Ep.1',
+          ep: '1. Cover',
           date: '04 October 2019',
           image:
             'https://images-na.ssl-images-amazon.com/images/I/612bK1krzxL._SX319_BO1,204,203,200_.jpg',
@@ -46,7 +46,7 @@ export default class CreateWebtoon extends Component {
             <TouchableOpacity>
               <Icon
                 name="arrow-back"
-                onPress={() => this.props.navigation.navigate('MyWebtoon')}
+                onPress={() => this.props.navigation.navigate('CreateWebtoon')}
               />
             </TouchableOpacity>
           </Left>
@@ -65,16 +65,16 @@ export default class CreateWebtoon extends Component {
         </Header>
 
         <Content style={{margin: 7}}>
-          <Text style={{fontWeight: 'bold'}}>Title</Text>
-          <Input style={{borderWidth: 2}}></Input>
+          <Text style={{marginBottom: 5, fontWeight: 'bold'}}>Title</Text>
+          <Input style={{marginBottom: 12, borderWidth: 2}}></Input>
           <View>
-            <Text style={{fontWeight: 'bold'}}>Episode</Text>
+            <Text style={{marginBottom: 7, fontWeight: 'bold'}}>Episode</Text>
             <FlatList
               data={this.state.details}
               showsHorizontalScrollIndicator={false}
               renderItem={({item}) => (
                 <Row>
-                  <View>
+                  <View style={{borderWidth: 2, margin: 5}}>
                     <Image
                       style={{
                         width: 80,
@@ -85,17 +85,19 @@ export default class CreateWebtoon extends Component {
                     />
                   </View>
 
-                  <View style={{margin: 12, alignSelf: 'center'}}>
+                  <View style={{alignItems: 'center', margin: 7}}>
                     <Text
                       style={{
                         fontSize: 18,
                         fontWeight: 'bold',
-                        marginBottom: 10,
+                        marginBottom: 5,
                       }}>
                       {item.ep}
                     </Text>
-                    <View>
-                      <Text style={{marginBottom: 10}}>{item.date}</Text>
+                    <View style={{borderWidth: 2}}>
+                      <Button style={{backgroundColor: 'red'}}>
+                        <Text>Delete</Text>
+                      </Button>
                     </View>
                   </View>
                 </Row>
@@ -106,13 +108,13 @@ export default class CreateWebtoon extends Component {
 
           <Button
             light
-            onPress={() => this.props.navigation.navigate('CreateEpi')}
             style={{
               borderWidth: 2,
               borderColor: 'black',
               justifyContent: 'center',
+              marginTop: 12,
             }}>
-            <Text>+ Add Episodes</Text>
+            <Text>+ Image</Text>
           </Button>
         </Content>
       </Container>

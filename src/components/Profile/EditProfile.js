@@ -29,10 +29,11 @@ export default class Profile extends Component {
           <Right>
             <Icon
               name="check"
+              type="FontAwesome"
               onPress={() => {
                 alert('berhasil');
               }}
-              style={{marginRight: 10, color: '#676767'}}
+              style={{marginRight: 10, color: 'yellow'}}
             />
           </Right>
         </Header>
