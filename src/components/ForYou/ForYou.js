@@ -195,8 +195,8 @@ export default class ForYou extends Component {
         <Footer>
           <FooterTab style={{backgroundColor: 'white', borderTopWidth: 1}}>
             <Button onPress={() => this.props.navigation.navigate('ForYou')}>
-              <Icon name="apps" style={{color: 'black'}} />
-              <Text style={{color: 'black'}}>For You</Text>
+              <Icon name="apps" style={{color: 'orange'}} />
+              <Text style={{color: 'orange'}}>For You</Text>
             </Button>
             <Button onPress={() => this.props.navigation.navigate('Favourite')}>
               <Icon name="star" style={{color: 'black'}} />

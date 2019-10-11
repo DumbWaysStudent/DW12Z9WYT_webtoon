@@ -89,8 +89,8 @@ export default class Favourite extends Component {
               <Text style={{color: 'black'}}>For You</Text>
             </Button>
             <Button onPress={() => this.props.navigation.navigate('Favourite')}>
-              <Icon name="star" style={{color: 'black'}} />
-              <Text style={{color: 'black'}}>Faourites</Text>
+              <Icon name="star" style={{color: 'orange'}} />
+              <Text style={{color: 'orange'}}>Faourites</Text>
             </Button>
             <Button onPress={() => this.props.navigation.navigate('profile')}>
               <Icon name="person" style={{color: 'black'}} />

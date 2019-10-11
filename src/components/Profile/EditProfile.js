@@ -77,8 +77,8 @@ export default class Profile extends Component {
               <Text style={{color: 'black'}}>Faourites</Text>
             </Button>
             <Button onPress={() => this.props.navigation.navigate('profile')}>
-              <Icon name="person" style={{color: 'black'}} />
-              <Text style={{color: 'black'}}>profile</Text>
+              <Icon name="person" style={{color: 'orange'}} />
+              <Text style={{color: 'orange'}}>profile</Text>
             </Button>
           </FooterTab>
         </Footer>

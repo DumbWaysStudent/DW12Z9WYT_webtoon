@@ -25,6 +25,8 @@ import EditProfile from './src/components/Profile/EditProfile';
 import MyWebtoon from './src/components/Profile/MyWebtoon';
 import CreateWebtoon from './src/components/Profile/CreateWebtoon';
 import CreateEpi from './src/components/Profile/CreateEpisode';
+import EditWebtoon from './src/components/Profile/EditWebtoon';
+import EditEpisode from './src/components/Profile/EditEpisode';
 
 const AuthStack = createStackNavigator({Login: Login});
 const AppStack = createStackNavigator({
@@ -37,6 +39,8 @@ const AppStack = createStackNavigator({
   MyWebtoon: MyWebtoon,
   CreateWebtoon: CreateWebtoon,
   CreateEpi: CreateEpi,
+  EditWebtoon: EditWebtoon,
+  EditEpisode: EditEpisode,
 });
 
 export default createAppContainer(

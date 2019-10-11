@@ -20,6 +20,9 @@ export default class MyWebtoon extends Component {
       title: 'MyWebtoon',
       headerStyle: {
         backgroundColor: 'white',
+        borderBottomWidth: 2,
+        borderBottomColor: 'black',
+        marginBottom: 5,
       },
       headerTitleStyle: {
         fontWeight: 'bold',
