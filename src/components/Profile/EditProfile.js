@@ -2,87 +2,150 @@ import React, {Component} from 'react';
 import {
   Container,
   Content,
-  Button,
-  Text,
   Header,
   Left,
   Right,
   Icon,
   Title,
-  Footer,
-  FooterTab,
+  Item,
   View,
+  Input,
+  Body,
 } from 'native-base';
-import {Image, StyleSheet, SafeAreaView, TouchableOpacity} from 'react-native';
+import {Image, StyleSheet, SafeAreaView, Text} from 'react-native';
+import ImagePicker from 'react-native-image-picker';
 
-export default class Profile extends Component {
+export default class EditProfile extends Component {
   static navigationOptions = {header: null};
+
+  constructor() {
+    super();
+    this.state = {
+      data: {name: 'Rizky Ariananda H'},
+      image: {
+        uri:
+          'https://icon-library.net/images/profile-png-icon/profile-png-icon-1.jpg',
+      },
+    };
+  }
+
+  handleChoosePhoto = () => {
+    const options = {
+      title: 'Choose Photo',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    ImagePicker.showImagePicker(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        let tmpPhoto = {
+          uri: response.uri,
+          type: response.type,
+          name: response.fileName,
+        };
+        const source = tmpPhoto;
+        this.setState({
+          image: source,
+        });
+      }
+    });
+  };
 
   render() {
     return (
-      <Container style={{backgroundColor: 'white'}}>
+      <Container>
         <Header style={{backgroundColor: 'white'}}>
           <Left>
-            <Title style={{color: 'black'}}>Edit Profil</Title>
+            <Icon
+              name="arrow-back"
+              onPress={() => {
+                this.props.navigation.navigate('profile');
+              }}
+              style={{marginRight: 10, color: 'black'}}
+            />
           </Left>
-
+          <Body>
+            <Title style={{color: 'black'}}>Edit Profile</Title>
+          </Body>
           <Right>
             <Icon
-              name="check"
-              type="FontAwesome"
+              name="md-checkmark"
               onPress={() => {
-                alert('berhasil');
+                alert('Data succesfully changed');
               }}
-              style={{marginRight: 10, color: 'yellow'}}
+              style={{marginRight: 10, color: 'green'}}
             />
           </Right>
         </Header>
         <Content>
-          <View>
+          <SafeAreaView style={{alignItems: 'center'}}>
             <Image
-              source={{
-                uri:
-                  'https://icon-library.net/images/profile-png-icon/profile-png-icon-1.jpg',
-              }}
-              style={{
-                alignSelf: 'center',
-                height: 200,
-                width: 200,
-                borderRadius: 100,
-              }}
+              style={styles.profileImg}
+              source={{uri: this.state.image.uri}}
             />
-          </View>
-          <Text style={{alignSelf: 'center', fontSize: 22, fontWeight: 'bold'}}>
-            Your Name
-          </Text>
-          <Button
-            style={{
-              backgroundColor: 'white',
-              marginTop: 5,
-              borderWidth: 1,
-              borderColor: 'black',
-            }}>
-            <Text style={{color: 'black'}}>Your Name</Text>
-          </Button>
+            <Icon
+              style={{
+                marginTop: -50,
+                backgroundColor: 'white',
+                borderRadius: 30,
+                padding: 10,
+                marginRight: 100,
+              }}
+              onPress={this.handleChoosePhoto}
+              name="camera"
+            />
+          </SafeAreaView>
+          <SafeAreaView style={{marginVertical: 15}}>
+            <View style={{alignItems: 'center'}}>
+              <Item>
+                <Input
+                  style={styles.input}
+                  onChangeText={text =>
+                    this.setState({data: {...this.state.data, name: text}})
+                  }
+                  value={this.state.data.name}
+                />
+              </Item>
+            </View>
+          </SafeAreaView>
         </Content>
-
-        <Footer>
-          <FooterTab style={{backgroundColor: 'white', borderTopWidth: 1}}>
-            <Button onPress={() => this.props.navigation.navigate('ForYou')}>
-              <Icon name="apps" style={{color: 'black'}} />
-              <Text style={{color: 'black'}}>For You</Text>
-            </Button>
-            <Button onPress={() => this.props.navigation.navigate('Favourite')}>
-              <Icon name="star" style={{color: 'black'}} />
-              <Text style={{color: 'black'}}>Faourites</Text>
-            </Button>
-            <Button onPress={() => this.props.navigation.navigate('profile')}>
-              <Icon name="person" style={{color: 'orange'}} />
-              <Text style={{color: 'orange'}}>profile</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
       </Container>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  title: {
+    marginHorizontal: 15,
+    marginVertical: 10,
+    fontSize: 25,
+    fontWeight: 'bold',
+  },
+  btnActive: {
+    color: '#00D163',
+  },
+  profileImg: {
+    marginVertical: 15,
+    alignSelf: 'center',
+    height: 200,
+    width: 200,
+    borderRadius: 100,
+  },
+  input: {
+    textAlign: 'center',
+    marginHorizontal: 15,
+    height: 40,
+    backgroundColor: 'white',
+    marginBottom: 10,
+    padding: 10,
+    color: '#000',
+    borderRadius: 15,
+  },
+});

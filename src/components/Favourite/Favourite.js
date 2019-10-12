@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, FlatList, Image} from 'react-native';
+import {View, Text, FlatList, Image, TouchableOpacity} from 'react-native';
 import {
   Footer,
   FooterTab,
@@ -64,10 +64,15 @@ export default class Favourite extends Component {
                 <View key={item.image}>
                   <Row style={{margin: 5}}>
                     <View style={{borderWidth: 2}}>
-                      <Image
-                        style={{height: 75, width: 75}}
-                        source={{uri: item.image}}
-                      />
+                      <TouchableOpacity
+                        onPress={() =>
+                          this.props.navigation.navigate('DetailScreen')
+                        }>
+                        <Image
+                          style={{height: 75, width: 75}}
+                          source={{uri: item.image}}
+                        />
+                      </TouchableOpacity>
                     </View>
                     <View>
                       <Text style={{fontWeight: 'bold', margin: 5}}>
@@ -78,6 +83,7 @@ export default class Favourite extends Component {
                   </Row>
                 </View>
               )}
+              keyExtractor={(item, index) => index.toString()}
             />
           </View>
         </Content>
@@ -89,8 +95,8 @@ export default class Favourite extends Component {
               <Text style={{color: 'black'}}>For You</Text>
             </Button>
             <Button onPress={() => this.props.navigation.navigate('Favourite')}>
-              <Icon name="star" style={{color: 'orange'}} />
-              <Text style={{color: 'orange'}}>Faourites</Text>
+              <Icon name="star" style={{color: 'green'}} />
+              <Text style={{color: 'green'}}>Faourites</Text>
             </Button>
             <Button onPress={() => this.props.navigation.navigate('profile')}>
               <Icon name="person" style={{color: 'black'}} />

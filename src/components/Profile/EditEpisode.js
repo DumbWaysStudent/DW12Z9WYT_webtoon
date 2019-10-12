@@ -68,8 +68,8 @@ export default class CreateWebtoon extends Component {
             <TouchableOpacity>
               <Icon
                 name="checkmark"
-                onPress={() => this.props.navigation.navigate('MyWebtoon')}
-                style={{color: 'yellow'}}
+                onPress={() => alert('Data has been saved')}
+                style={{color: 'green'}}
               />
             </TouchableOpacity>
           </Right>
@@ -117,19 +117,18 @@ export default class CreateWebtoon extends Component {
 
           <View style={{margin: 5}}>
             <Button
-              light
-              onPress={() => this.props.navigation.navigate('CreateEpi')}
+              onPress={() => alert('Image has been added')}
               style={{
                 borderWidth: 2,
                 borderColor: 'black',
                 justifyContent: 'center',
                 marginBottom: 7,
+                backgroundColor: 'green',
               }}>
-              <Text>+ Image</Text>
+              <Text style={{color: 'white'}}>+ Image</Text>
             </Button>
             <Button
-              light
-              onPress={() => this.props.navigation.navigate('CreateEpi')}
+              onPress={() => alert('Data has been deleted')}
               style={{
                 borderWidth: 2,
                 borderColor: 'black',

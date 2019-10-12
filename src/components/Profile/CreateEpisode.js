@@ -60,37 +60,38 @@ export default class CreateEpi extends Component {
           </Body>
           <Right>
             <TouchableOpacity>
-              <Icon
-                name="checkmark"
-                onPress={() => this.props.navigation.navigate('EditWebtoon')}
-                style={{color: 'yellow'}}
-              />
+              <Icon name="checkmark" style={{color: 'green'}} />
             </TouchableOpacity>
           </Right>
         </Header>
 
         <Content style={{margin: 7}}>
-          <Text style={{marginBottom: 5, fontWeight: 'bold'}}>Title</Text>
-          <Input style={{marginBottom: 12, borderWidth: 2}}></Input>
+          <Text style={{fontWeight: 'bold'}}>Title</Text>
+          <Input style={{borderWidth: 2}}></Input>
           <View>
-            <Text style={{marginBottom: 7, fontWeight: 'bold'}}>Episode</Text>
+            <Text style={{fontWeight: 'bold'}}>Episode</Text>
             <FlatList
               data={this.state.details}
               showsHorizontalScrollIndicator={false}
               renderItem={({item}) => (
                 <Row>
-                  <View style={{borderWidth: 2, margin: 5}}>
-                    <Image
-                      style={{
-                        width: 80,
-                        height: 80,
-                        padding: 10,
-                      }}
-                      source={{uri: item.image}}
-                    />
+                  <View>
+                    <TouchableOpacity
+                      onPress={() =>
+                        this.props.navigation.navigate('EditWebtoon')
+                      }>
+                      <Image
+                        style={{
+                          width: 80,
+                          height: 80,
+                          padding: 10,
+                        }}
+                        source={{uri: item.image}}
+                      />
+                    </TouchableOpacity>
                   </View>
 
-                  <View style={{alignItems: 'center', margin: 7}}>
+                  <View style={{justifyContent: 'center', margin: 7}}>
                     <Text
                       style={{
                         fontSize: 18,
@@ -100,7 +101,9 @@ export default class CreateEpi extends Component {
                       {item.ep}
                     </Text>
                     <View style={{borderWidth: 2}}>
-                      <Button style={{backgroundColor: 'red'}}>
+                      <Button
+                        style={{backgroundColor: 'red'}}
+                        onPress={() => alert('Data has been deleted')}>
                         <Text>Delete</Text>
                       </Button>
                     </View>
@@ -118,7 +121,8 @@ export default class CreateEpi extends Component {
               borderColor: 'black',
               justifyContent: 'center',
               marginTop: 12,
-            }}>
+            }}
+            onPress={() => alert('Image has been added')}>
             <Text>+ Image</Text>
           </Button>
         </Content>

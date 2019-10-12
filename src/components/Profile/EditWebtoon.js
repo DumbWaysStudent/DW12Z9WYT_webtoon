@@ -68,8 +68,8 @@ export default class CreateWebtoon extends Component {
             <TouchableOpacity>
               <Icon
                 name="checkmark"
-                onPress={() => this.props.navigation.navigate('EditEpisode')}
-                style={{color: 'yellow'}}
+                style={{color: 'green'}}
+                onPress={() => alert('Data has been saved')}
               />
             </TouchableOpacity>
           </Right>
@@ -86,14 +86,19 @@ export default class CreateWebtoon extends Component {
               renderItem={({item}) => (
                 <Row>
                   <View style={{borderWidth: 2, margin: 5}}>
-                    <Image
-                      style={{
-                        width: 80,
-                        height: 80,
-                        padding: 10,
-                      }}
-                      source={{uri: item.image}}
-                    />
+                    <TouchableOpacity
+                      onPress={() =>
+                        this.props.navigation.navigate('EditEpisode')
+                      }>
+                      <Image
+                        style={{
+                          width: 80,
+                          height: 80,
+                          padding: 10,
+                        }}
+                        source={{uri: item.image}}
+                      />
+                    </TouchableOpacity>
                   </View>
 
                   <View style={{margin: 12, alignSelf: 'center'}}>
@@ -117,19 +122,18 @@ export default class CreateWebtoon extends Component {
 
           <View style={{margin: 5}}>
             <Button
-              light
-              onPress={() => this.props.navigation.navigate('CreateEpi')}
+              onPress={() => alert('Data has been added')}
               style={{
                 borderWidth: 2,
                 borderColor: 'black',
                 justifyContent: 'center',
                 marginBottom: 7,
+                backgroundColor: 'green',
               }}>
               <Text>+ Add Episodes</Text>
             </Button>
             <Button
-              light
-              onPress={() => this.props.navigation.navigate('CreateEpi')}
+              onPress={() => alert('Data has been deleted')}
               style={{
                 borderWidth: 2,
                 borderColor: 'black',

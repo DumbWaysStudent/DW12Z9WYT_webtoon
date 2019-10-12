@@ -57,8 +57,8 @@ export default class CreateWebtoon extends Component {
             <TouchableOpacity>
               <Icon
                 name="checkmark"
-                onPress={() => this.props.navigation.navigate('CreateEpi')}
-                style={{color: 'yellow'}}
+                style={{color: 'green'}}
+                onPress={() => alert('Data Berhasil Diubah')}
               />
             </TouchableOpacity>
           </Right>
@@ -75,14 +75,19 @@ export default class CreateWebtoon extends Component {
               renderItem={({item}) => (
                 <Row>
                   <View>
-                    <Image
-                      style={{
-                        width: 80,
-                        height: 80,
-                        padding: 10,
-                      }}
-                      source={{uri: item.image}}
-                    />
+                    <TouchableOpacity
+                      onPress={() =>
+                        this.props.navigation.navigate('CreateEpi')
+                      }>
+                      <Image
+                        style={{
+                          width: 80,
+                          height: 80,
+                          padding: 10,
+                        }}
+                        source={{uri: item.image}}
+                      />
+                    </TouchableOpacity>
                   </View>
 
                   <View style={{margin: 12, alignSelf: 'center'}}>
@@ -105,12 +110,12 @@ export default class CreateWebtoon extends Component {
           </View>
 
           <Button
-            light
-            onPress={() => this.props.navigation.navigate('CreateEpi')}
+            onPress={() => alert('Successfully added new episodes')}
             style={{
               borderWidth: 2,
               borderColor: 'black',
               justifyContent: 'center',
+              backgroundColor: 'green',
             }}>
             <Text>+ Add Episodes</Text>
           </Button>

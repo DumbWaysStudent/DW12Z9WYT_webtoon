@@ -48,7 +48,7 @@ export default class pass extends Component {
       <View style={styles.container}>
         <View style={styles.containerTitle}>
           <Text style={styles.title}>Log In</Text>
-          <Text style={styles.titleDesc}>Login with your account WEBTOON</Text>
+          <Text style={styles.titleDesc}>Login with your account</Text>
         </View>
         <Form>
           <Item>
@@ -67,18 +67,20 @@ export default class pass extends Component {
             <Icon name={this.state.icon} onPress={() => this.changeIcon()} />
           </Item>
         </Form>
-        <Button
-          success
-          block
-          disabled={this.state.buttonDisabled}
-          style={{
-            borderWidth: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          onPress={() => this.props.navigation.navigate('ForYou')}>
-          <Text>Login</Text>
-        </Button>
+        <View style={{margin: 13}}>
+          <Button
+            success
+            block
+            disabled={this.state.buttonDisabled}
+            style={{
+              borderWidth: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onPress={() => this.props.navigation.navigate('ForYou')}>
+            <Text>Login</Text>
+          </Button>
+        </View>
       </View>
     );
   }
@@ -92,6 +94,7 @@ const styles = {
   title: {
     fontSize: 50,
     color: 'green',
+    margin: 7,
   },
   titleDesc: {
     marginTop: 20,

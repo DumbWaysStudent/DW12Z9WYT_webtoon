@@ -96,7 +96,10 @@ export default class DetailScreen extends Component {
                       style={{borderWidth: 2, margin: 7}}
                       onPress={() =>
                         this.props.navigation.navigate('DetailEp', {
-                          item,
+                          arr: item.details,
+                          title: item.ep,
+                          pic: item.image,
+                          image: item.content,
                         })
                       }>
                       <Image

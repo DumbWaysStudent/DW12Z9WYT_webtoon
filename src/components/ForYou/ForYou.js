@@ -65,21 +65,14 @@ export default class ForYou extends Component {
   renderPage(image, index) {
     return (
       <View key={index} style={{margin: 3}}>
-        <TouchableOpacity
-          onPress={() =>
-            this.props.navigation.navigate('DetailScreen', {
-              title: this.state.banners.title,
-            })
-          }>
-          <Image
-            style={{
-              width: BannerWidth,
-              height: BannerHeight,
-              resizeMode: 'contain',
-            }}
-            source={{uri: image}}
-          />
-        </TouchableOpacity>
+        <Image
+          style={{
+            width: BannerWidth,
+            height: BannerHeight,
+            resizeMode: 'contain',
+          }}
+          source={{uri: image}}
+        />
       </View>
     );
   }
@@ -167,7 +160,10 @@ export default class ForYou extends Component {
                 <Row>
                   <TouchableOpacity
                     onPress={() =>
-                      this.props.navigation.navigate('DetailScreen')
+                      this.props.navigation.navigate('DetailScreen', {
+                        title: image.title,
+                        image: image.image,
+                      })
                     }>
                     <Image
                       style={{width: 75, height: 75, margin: 7, borderWidth: 5}}
@@ -195,8 +191,8 @@ export default class ForYou extends Component {
         <Footer>
           <FooterTab style={{backgroundColor: 'white', borderTopWidth: 1}}>
             <Button onPress={() => this.props.navigation.navigate('ForYou')}>
-              <Icon name="apps" style={{color: 'orange'}} />
-              <Text style={{color: 'orange'}}>For You</Text>
+              <Icon name="apps" style={{color: 'green'}} />
+              <Text style={{color: 'green'}}>For You</Text>
             </Button>
             <Button onPress={() => this.props.navigation.navigate('Favourite')}>
               <Icon name="star" style={{color: 'black'}} />

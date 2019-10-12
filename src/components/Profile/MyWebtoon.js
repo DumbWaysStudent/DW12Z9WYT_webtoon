@@ -86,7 +86,7 @@ export default class MyWebtoon extends Component {
 
         <Fab
           active={false}
-          style={{backgroundColor: 'yellow'}}
+          style={{backgroundColor: 'green'}}
           position="bottomRight"
           onPress={() => this.props.navigation.navigate('CreateWebtoon')}>
           <Icon type="FontAwesome" name="plus" />
