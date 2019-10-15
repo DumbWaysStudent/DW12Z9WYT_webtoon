@@ -2,17 +2,6 @@ const models = require('../models');
 const Webtoon = models.webtoon;
 const User = models.user;
 
-// exports.index = (req, res) => {
-//   Todo.findAll({
-//     include: [
-//       {
-//         model: User,
-//         as: "createdBy"
-//       }
-//     ]
-//   }).then(todos => res.send(todos));
-// };
-
 exports.index = (req, res) => {
   Webtoon.findAll({
     include: [

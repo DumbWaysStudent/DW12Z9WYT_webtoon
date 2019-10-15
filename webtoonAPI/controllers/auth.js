@@ -29,15 +29,13 @@ exports.login = (req, res) => {
 exports.register = (req, res) => {
   //const email = req.body.email;
   //const password = req.body.password
+  const hashedPassword = bcrypt.hashSync(req.body.password, 8);
+  User.create({email: req.body.email, password: hashedPassword}).then(user => {
+    const token = jwt.sign({userId: user.id}, 'my-secret-key');
 
-  User.create({email: req.body.email, password: req.body.password}).then(
-    user => {
-      const token = jwt.sign({userId: user.id}, 'my-secret-key');
-
-      res.send({
-        email: user.email,
-        token,
-      });
-    },
-  );
+    res.send({
+      email: user.email,
+      token,
+    });
+  });
 };
