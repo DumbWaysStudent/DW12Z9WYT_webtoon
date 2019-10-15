@@ -21,11 +21,12 @@ app.group('/api/v1', router => {
 
   //todos API
   router.get('/webtoons', TodosController.index);
-  //router.get('/todos', TodosController.index);
-  router.get('/todo/:id', TodosController.show);
-  router.post('/todo', authenticated, TodosController.store);
-  router.patch('/todo/:id', authenticated, TodosController.update);
-  router.delete('/todo/:id', authenticated, TodosController.delete);
+  // Get all episodes of a webtoon
+  router.get('/webtoon/:id_webtoon/episodes', TodosController.getToonEps);
+  // router.get('/todo/:id', TodosController.show);
+  // router.post('/todo', authenticated, TodosController.store);
+  // router.patch('/todo/:id', authenticated, TodosController.update);
+  // router.delete('/todo/:id', authenticated, TodosController.delete);
 
   //another APIs goes here
 });
