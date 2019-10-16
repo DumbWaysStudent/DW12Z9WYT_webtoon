@@ -82,3 +82,19 @@ exports.user = (req, res) => {
       console.log(err);
     });
 };
+
+exports.storeToon = (req, res) => {
+  const user_id = req.params.user_id;
+
+  Webtoon.create({
+    title: req.body.title,
+    genre: req.body.genre,
+    isFavorite: req.body.isFavorite,
+    image: req.body.image,
+    createdBy: user_id,
+  })
+    .then(webtoon => res.send(webtoon))
+    .catch(err => {
+      console.log(err);
+    });
+};

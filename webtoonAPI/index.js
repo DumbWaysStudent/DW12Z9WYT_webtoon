@@ -30,6 +30,12 @@ app.group('/api/v1', router => {
   );
   // Get my creation
   router.get('/user/:user_id/webtoons', authenticated, TodosController.user);
+  // Post created toon
+  router.post(
+    '/user/:user_id/webtoon',
+    authenticated,
+    TodosController.storeToon,
+  );
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}!`));
