@@ -184,3 +184,29 @@ exports.showImgEps = (req, res) => {
       console.log(err);
     });
 };
+
+exports.deleteMyEpi = (req, res) => {
+  const {user_id, webtoon_id, episode_id} = req.params;
+  User.findAll({
+    where: {
+      id: user_id,
+    },
+  }).then(() => {
+    Webtoon.findOne({
+      createBy: webtoon_id,
+    })
+      .then(() => {
+        Episode.destroy({
+          where: {
+            id: episode_id,
+          },
+        });
+      })
+      .then(webtoon =>
+        res.send({
+          message: 'success',
+          webtoon: webtoon_id,
+        }),
+      );
+  });
+};

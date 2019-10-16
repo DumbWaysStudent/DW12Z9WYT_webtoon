@@ -65,6 +65,12 @@ app.group('/api/v1', router => {
     authenticated,
     TodosController.showImgEps,
   );
+  // Delete my episode
+  router.delete(
+    '/user/:user_id/webtoon/:webtoon_id/episode/:episode_id',
+    authenticated,
+    TodosController.deleteMyEpi,
+  );
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}!`));
