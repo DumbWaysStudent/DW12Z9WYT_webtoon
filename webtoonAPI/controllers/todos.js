@@ -119,3 +119,14 @@ exports.editMyToon = (req, res) => {
       console.log(err);
     });
 };
+
+exports.deleteMyToon = (req, res) => {
+  const userId = req.params.user_id;
+  const toonId = req.params.webtoon_id;
+
+  Webtoon.destroy({
+    where: {createdBy: userId, id: toonId},
+  }).then(deletedRow => {
+    res.status(200).json({id: deletedRow});
+  });
+};

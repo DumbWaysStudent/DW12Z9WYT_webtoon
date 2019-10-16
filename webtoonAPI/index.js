@@ -42,6 +42,12 @@ app.group('/api/v1', router => {
     authenticated,
     TodosController.editMyToon,
   );
+  // Delete my toon
+  router.delete(
+    '/user/:user_id/webtoon/:webtoon_id',
+    authenticated,
+    TodosController.deleteMyToon,
+  );
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}!`));
