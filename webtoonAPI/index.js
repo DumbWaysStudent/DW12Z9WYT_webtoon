@@ -54,6 +54,11 @@ app.group('/api/v1', router => {
     authenticated,
     TodosController.createEpiToon,
   );
+  //Edit detail my episode
+  router.put(
+    '/user/:user_id/webtoon/:webtoon_id/episode/:episode_id',
+    TodosController.updateEpi,
+  );
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}!`));

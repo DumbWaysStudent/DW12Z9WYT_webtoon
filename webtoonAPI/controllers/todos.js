@@ -131,25 +131,6 @@ exports.deleteMyToon = (req, res) => {
   });
 };
 
-// exports.createEpiToon = (req, res) => {
-//   User.findAll({
-//     where: {
-//       id: req.params.user_id,
-//     },
-//   })
-//     .then(() => {
-//       Episode.create({
-//         title: req.body.title,
-//         image: req.body.image,
-//         webtoon_id: req.params.webtoon_id,
-//       });
-//     })
-//     .then(webtoon => res.send(webtoon))
-//     .catch(err => {
-//       console.log(err);
-//     });
-// };
-
 exports.createEpiToon = (req, res) => {
   const body = {
     title: req.body.title,
@@ -168,3 +149,48 @@ exports.createEpiToon = (req, res) => {
       console.log(err);
     });
 };
+
+exports.updateEpi = (req, res) => {
+  const user_id = req.params.user_id;
+  const toonId = req.params.webtoon_id;
+  const epiId = req.params.episode_id;
+
+  User.findAll({
+    where: {id: user_id},
+  }).then(() => {
+    Episode.update(
+      {
+        title: req.body.title,
+        image: req.body.image,
+        webtoonId: toonId,
+      },
+      {where: {id: epiId}},
+    )
+      .then(webtoon => res.send({message: 'success', webtoon}))
+      .catch(err => {
+        console.log(err);
+      });
+  });
+};
+
+// exports.updateEpi = (req, res) => {
+//   const {user_id, webtoon_id, episode_id} = req.params;
+//   User.findAll({
+//     where: {
+//       id: user_id,
+//     },
+//   }).then(() => {
+//     Episodes.update(
+//       {
+//         title: req.body.title,
+//         image: req.body.image,
+//         webtoon_id: webtoon_id,
+//       },
+//       {
+//         where: {
+//           id: episode_id,
+//         },
+//       },
+//     ).then(webtoon => res.send(webtoon));
+//   });
+// };
