@@ -173,24 +173,14 @@ exports.updateEpi = (req, res) => {
   });
 };
 
-// exports.updateEpi = (req, res) => {
-//   const {user_id, webtoon_id, episode_id} = req.params;
-//   User.findAll({
-//     where: {
-//       id: user_id,
-//     },
-//   }).then(() => {
-//     Episodes.update(
-//       {
-//         title: req.body.title,
-//         image: req.body.image,
-//         webtoon_id: webtoon_id,
-//       },
-//       {
-//         where: {
-//           id: episode_id,
-//         },
-//       },
-//     ).then(webtoon => res.send(webtoon));
-//   });
-// };
+exports.showImgEps = (req, res) => {
+  const {episode_id} = req.params;
+
+  Page.findAll({
+    where: {id: episode_id},
+  })
+    .then(posts => res.send(posts))
+    .catch(err => {
+      console.log(err);
+    });
+};

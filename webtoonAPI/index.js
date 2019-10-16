@@ -59,6 +59,12 @@ app.group('/api/v1', router => {
     '/user/:user_id/webtoon/:webtoon_id/episode/:episode_id',
     TodosController.updateEpi,
   );
+  // Get all images of an episode
+  router.get(
+    '/user/:user_id/webtoon/:webtoon_id/episode/:episode_id/images',
+    authenticated,
+    TodosController.showImgEps,
+  );
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}!`));
