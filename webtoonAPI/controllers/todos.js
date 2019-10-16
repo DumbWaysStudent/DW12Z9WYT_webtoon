@@ -2,6 +2,7 @@ const models = require('../models');
 const Webtoon = models.webtoon;
 const User = models.user;
 const Episode = models.episode;
+const Page = models.page;
 
 exports.index = (req, res) => {
   Webtoon.findAll({
@@ -54,6 +55,18 @@ exports.getToonEps = (req, res) => {
   Episode.findAll({
     where: {webtoon_id: id},
     attributes: {exclude: ['id', 'webtoon_id']},
+  }).then(data => {
+    res.send(data);
+  });
+};
+
+exports.getToonPages = (req, res) => {
+  const webtoonsId = req.params.id_webtoon;
+  const epsodeId = req.params.id_episode;
+
+  Page.findAll({
+    where: {episode_id: epsodeId, webtoon_id: webtoonsId},
+    attributes: {exclude: ['id', 'episode_id', 'webtoon_id']},
   }).then(data => {
     res.send(data);
   });

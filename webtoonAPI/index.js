@@ -23,6 +23,11 @@ app.group('/api/v1', router => {
   router.get('/webtoons', TodosController.index);
   // Get all episodes of a webtoon
   router.get('/webtoon/:id_webtoon/episodes', TodosController.getToonEps);
+  // Get all pages of an episode
+  router.get(
+    '/webtoon/:id_webtoon/episode/:id_episode',
+    TodosController.getToonPages,
+  );
   // router.get('/todo/:id', TodosController.show);
   // router.post('/todo', authenticated, TodosController.store);
   // router.patch('/todo/:id', authenticated, TodosController.update);
