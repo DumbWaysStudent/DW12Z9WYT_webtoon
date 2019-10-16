@@ -20,7 +20,7 @@ app.group('/api/v1', router => {
   router.post('/register', AuthController.register);
 
   //todos API
-  router.get('/webtoons', TodosController.index);
+  router.get('/webtoons', authenticated, TodosController.index);
   // Get all episodes of a webtoon
   router.get('/webtoon/:id_webtoon/episodes', TodosController.getToonEps);
   // Get all pages of an episode
@@ -30,10 +30,16 @@ app.group('/api/v1', router => {
   );
   // Favorite pages
   router.get(
-    '/webtoons/isFavorite=true',
+    '/webtoons?isFavorite=true',
     authenticated,
     TodosController.getFav,
   );
+  // Search Webtoon
+  router.get('/webtoons/title=:title', TodosController.search);
+
+  // Private API
+  // Get all webtoons/favs
+  //router.get('/webtoons', TodosController.getAllToons);
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}!`));
