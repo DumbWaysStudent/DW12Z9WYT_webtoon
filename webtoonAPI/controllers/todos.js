@@ -64,3 +64,21 @@ exports.getFav = (req, res) => {
       console.log(err);
     });
 };
+
+exports.user = (req, res) => {
+  const {user_id} = req.params;
+  Webtoon.findAll({
+    include: [
+      {
+        model: User,
+        as: 'created_by',
+        attributes: ['id'],
+      },
+    ],
+    where: {createdBy: user_id},
+  })
+    .then(webtoon => res.send(webtoon))
+    .catch(err => {
+      console.log(err);
+    });
+};
