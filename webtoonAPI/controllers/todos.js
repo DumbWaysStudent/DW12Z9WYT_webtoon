@@ -5,6 +5,8 @@ const Episode = models.episode;
 const Page = models.page;
 
 exports.index = (req, res) => {
+  console.log('ini index');
+
   Webtoon.findAll({
     include: [
       {
@@ -15,39 +17,6 @@ exports.index = (req, res) => {
     ],
   }).then(webtoon => res.send(webtoon));
 };
-
-// exports.show = (req, res) => {
-//   console.log(req.params.id);
-
-//   Todo.findOne({where: {id: req.params.id}}).then(todo => res.send(todo));
-// };
-
-// exports.store = (req, res) => {
-//   Todo.create(req.body).then(todo => {
-//     res.send({
-//       message: 'success',
-//       todo,
-//     });
-//   });
-// };
-
-// exports.update = (req, res) => {
-//   Todo.update(req.body, {where: {id: req.params.id}}).then(todo => {
-//     res.send({
-//       message: 'success',
-//       todo,
-//     });
-//   });
-// };
-
-// exports.delete = (req, res) => {
-//   Todo.destroy({where: {id: req.params.id}}).then(todo => {
-//     res.send({
-//       message: 'success',
-//       todo,
-//     });
-//   });
-// };
 
 exports.getToonEps = (req, res) => {
   const id = req.params.id_webtoon;
@@ -70,4 +39,16 @@ exports.getToonPages = (req, res) => {
   }).then(data => {
     res.send(data);
   });
+};
+
+exports.getFav = (req, res) => {
+  // const favorite = req.query.is_favorite;
+  // console.log(favorite);
+  Webtoon.findAll({
+    where: {isFavorite: true},
+  })
+    .then(webtoon => res.send(webtoon))
+    .catch(err => {
+      console.log(err);
+    });
 };

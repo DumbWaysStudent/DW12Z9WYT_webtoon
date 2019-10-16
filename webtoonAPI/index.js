@@ -28,12 +28,12 @@ app.group('/api/v1', router => {
     '/webtoon/:id_webtoon/episode/:id_episode',
     TodosController.getToonPages,
   );
-  // router.get('/todo/:id', TodosController.show);
-  // router.post('/todo', authenticated, TodosController.store);
-  // router.patch('/todo/:id', authenticated, TodosController.update);
-  // router.delete('/todo/:id', authenticated, TodosController.delete);
-
-  //another APIs goes here
+  // Favorite pages
+  router.get(
+    '/webtoons/isFavorite=true',
+    authenticated,
+    TodosController.getFav,
+  );
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}!`));
