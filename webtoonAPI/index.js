@@ -48,6 +48,12 @@ app.group('/api/v1', router => {
     authenticated,
     TodosController.deleteMyToon,
   );
+  // Post an episode of a toon
+  router.post(
+    '/user/:user_id/webtoon/:webtoon_id/episode',
+    authenticated,
+    TodosController.createEpiToon,
+  );
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}!`));

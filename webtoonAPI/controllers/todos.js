@@ -130,3 +130,41 @@ exports.deleteMyToon = (req, res) => {
     res.status(200).json({id: deletedRow});
   });
 };
+
+// exports.createEpiToon = (req, res) => {
+//   User.findAll({
+//     where: {
+//       id: req.params.user_id,
+//     },
+//   })
+//     .then(() => {
+//       Episode.create({
+//         title: req.body.title,
+//         image: req.body.image,
+//         webtoon_id: req.params.webtoon_id,
+//       });
+//     })
+//     .then(webtoon => res.send(webtoon))
+//     .catch(err => {
+//       console.log(err);
+//     });
+// };
+
+exports.createEpiToon = (req, res) => {
+  const body = {
+    title: req.body.title,
+    image: req.body.image,
+    webtoon_id: req.params.webtoon_id,
+    user_id: req.params.user_id,
+  };
+  Episode.create(body)
+    .then(data => {
+      res.send({
+        message: 'success',
+        data,
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
