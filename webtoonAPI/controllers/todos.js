@@ -98,3 +98,24 @@ exports.storeToon = (req, res) => {
       console.log(err);
     });
 };
+
+exports.editMyToon = (req, res) => {
+  const user_id = req.params.user_id;
+  const toonId = req.params.webtoon_id;
+  console.log('user id ke:' + user_id + ' ' + 'webtoon_id ke' + toonId);
+
+  Webtoon.update(
+    {
+      title: req.body.title,
+      genre: req.body.genre,
+      isFavorite: req.body.isFavorite,
+      image: req.body.image,
+      createdBy: user_id,
+    },
+    {where: {id: toonId}},
+  )
+    .then(webtoon => res.send(webtoon))
+    .catch(err => {
+      console.log(err);
+    });
+};

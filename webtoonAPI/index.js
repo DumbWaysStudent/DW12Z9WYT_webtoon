@@ -36,6 +36,12 @@ app.group('/api/v1', router => {
     authenticated,
     TodosController.storeToon,
   );
+  // Update my created toon
+  router.put(
+    '/user/:user_id/webtoon/:webtoon_id',
+    authenticated,
+    TodosController.editMyToon,
+  );
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}!`));
