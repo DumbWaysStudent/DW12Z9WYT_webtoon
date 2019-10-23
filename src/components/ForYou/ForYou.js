@@ -24,10 +24,14 @@ import {
 } from 'react-native';
 import Carousel from 'react-native-banner-carousel';
 import AsyncStorage from '@react-native-community/async-storage';
+import {connect} from 'react-redux';
+import getToons from '../../_redux/toons';
+import getFav from '../../_redux/favorite';
+
 const BannerWidth = Dimensions.get('window').width;
 const BannerHeight = 180;
 
-export default class ForYou extends Component {
+class ForYou extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -68,17 +72,18 @@ export default class ForYou extends Component {
   async componentDidMount() {
     await this.getToken();
     await this.getId();
-    axios
-      .get(`http:192.168.1.23:2019/api/v1/webtoons`)
-      .then(res => {
-        const data = res.data;
-        console.log(data);
-        console.log(this.state.id);
-        this.setState({banners: data});
-      })
-      .catch(error => {
-        console.log('Api call error');
-      });
+    // axios
+    //   .get(`http:192.168.1.23:2019/api/v1/webtoons`)
+    //   .then(res => {
+    //     const data = res.data;
+    //     console.log(data);
+    //     console.log(this.state.id);
+    //     this.setState({banners: data});
+    //   })
+    //   .catch(error => {
+    //     console.log('Api call error');
+    //   });
+    this.showWebtoons();
     this.showFavorite();
   }
 
@@ -98,19 +103,33 @@ export default class ForYou extends Component {
     );
   }
 
+  showWebtoons = () => {
+    this.props.getToons();
+  };
+
+  // showFavorite = () => {
+  //   axios({
+  //     method: 'GET',
+  //     headers: {
+  //       'content-type': 'application/json',
+  //       authorization: `Bearer ${this.state.token}`,
+  //     },
+  //     url: `http:192.168.1.23:2019/api/v1/user/${this.state.id}/favorites`,
+  //   }).then(res => {
+  //     const favorites = res.data;
+  //     this.setState({favorites});
+  //     console.log(this.state.favorites);
+  //   });
+  // };
+
   showFavorite = () => {
-    axios({
-      method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-        authorization: `Bearer ${this.state.token}`,
-      },
-      url: `http:192.168.1.23:2019/api/v1/user/${this.state.id}/favorites`,
-    }).then(res => {
-      const favorites = res.data;
-      this.setState({favorites});
-      console.log(this.state.favorites);
+    this.props.getFav((id = this.state.id), (token = this.state.token));
+    this.setState({
+      favorites: this.props.favorite.data.map(res => res.webtoon_id),
     });
+    this.showWebtoons();
+
+    console.log(this.state.favorite, '?????????????');
   };
 
   createFav = id => {
@@ -134,9 +153,10 @@ export default class ForYou extends Component {
       <View key={index} style={{margin: 3}}>
         <Image
           style={{
-            width: BannerWidth,
-            height: BannerHeight,
-            resizeMode: 'contain',
+            width: 365,
+            height: 225,
+
+            // resizeMode: 'contain',
           }}
           source={{uri: image}}
         />
@@ -145,6 +165,9 @@ export default class ForYou extends Component {
   }
 
   render() {
+    const {toons, favorite} = this.props;
+    console.log(toons);
+
     return (
       <Container>
         <Header searchBar style={{backgroundColor: 'white'}}>
@@ -175,7 +198,7 @@ export default class ForYou extends Component {
               loop
               index={0}
               pageSize={BannerWidth}>
-              {this.state.banners.map((image, index) =>
+              {toons.data.map((image, index) =>
                 this.renderPage(image.image, index),
               )}
             </Carousel>
@@ -191,7 +214,7 @@ export default class ForYou extends Component {
               Favorite
             </Text>
             <ScrollView horizontal={true}>
-              {this.state.favorites.map(image => (
+              {favorite.data.map(image => (
                 <View
                   style={{
                     width: 100,
@@ -231,7 +254,7 @@ export default class ForYou extends Component {
               All
             </Text>
 
-            {this.state.banners.map(image => (
+            {toons.data.map(image => (
               <View style={{flex: 1, width: 130}}>
                 <Row>
                   <TouchableOpacity
@@ -295,6 +318,23 @@ export default class ForYou extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    toons: state.toons,
+    favorite: state.favorite,
+  };
+};
+
+const mapDispatchToProps = {
+  getToons,
+  getFav,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ForYou);
 
 const styles = StyleSheet.create({
   container: {

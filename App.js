@@ -11,9 +11,11 @@
 // }
 
 // export default App;
-
+import React, {Component} from 'react';
+import {Provider} from 'react-redux';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
+import store from './src/_redux/index';
 
 import Login from './src/components/Login/Login';
 import ForYou from './src/components/ForYou/ForYou';
@@ -49,7 +51,7 @@ const AppStack = createStackNavigator({
   searchFav: searchFav,
 });
 
-export default createAppContainer(
+const AppContainer = createAppContainer(
   createSwitchNavigator(
     {
       App: AppStack,
@@ -61,12 +63,12 @@ export default createAppContainer(
   ),
 );
 
-// const App = () => {
-//   return (
-//     <Provider store={store}>
-//       <RootNavigation />
-//     </Provider>
-//   );
-// };
+const App = () => {
+  return (
+    <Provider store={store}>
+      <AppContainer />
+    </Provider>
+  );
+};
 
-// export default App;
+export default App;
