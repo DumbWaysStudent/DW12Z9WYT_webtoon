@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import axios from 'axios';
 import {View, Text, FlatList, Image, TouchableOpacity} from 'react-native';
 import {
   Footer,
@@ -12,6 +13,7 @@ import {
   Content,
   Row,
 } from 'native-base';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class Favourite extends Component {
   static navigationOptions = {header: null};
@@ -20,35 +22,103 @@ export default class Favourite extends Component {
     super(props);
     this.state = {
       banners: [
-        {
-          title: 'The Secret of Angel',
-          image:
-            'https://akcdn.detik.net.id/community/media/visual/2019/04/03/dac43146-7dd4-49f4-89ca-d81f57b070fc.jpeg?w=770&q=90',
-          favorite: '100+ favorite',
-        },
-        {
-          title: 'Pasutri Gaje',
-          image:
-            'https://4.bp.blogspot.com/-7RzHQQanlqY/XE7r94lzUCI/AAAAAAAACqI/keHhTWrJ1441h7vHWIL_FNf912DnsRMbQCLcBGAs/s1600/Pasutri%2BGaje%2BSeason%2B2%2BAnissa%2BNisfihani%2BWebtoon%2BIndonesia.JPG',
-          favorite: '90 favorite',
-        },
-        {
-          title: 'Young Mom',
-          image:
-            'https://cdn.idntimes.com/content-images/community/2019/03/opera-snapshot-2019-03-10-190819-wwwwebtoonscom-aa64078ba943e7895194e96f853d4d20.png',
-          favorite: '80 favorite',
-        },
+        // {
+        //   title: 'The Secret of Angel',
+        //   image:
+        //     'https://akcdn.detik.net.id/community/media/visual/2019/04/03/dac43146-7dd4-49f4-89ca-d81f57b070fc.jpeg?w=770&q=90',
+        //   favorite: '100+ favorite',
+        // },
+        // {
+        //   title: 'Pasutri Gaje',
+        //   image:
+        //     'https://4.bp.blogspot.com/-7RzHQQanlqY/XE7r94lzUCI/AAAAAAAACqI/keHhTWrJ1441h7vHWIL_FNf912DnsRMbQCLcBGAs/s1600/Pasutri%2BGaje%2BSeason%2B2%2BAnissa%2BNisfihani%2BWebtoon%2BIndonesia.JPG',
+        //   favorite: '90 favorite',
+        // },
+        // {
+        //   title: 'Young Mom',
+        //   image:
+        //     'https://cdn.idntimes.com/content-images/community/2019/03/opera-snapshot-2019-03-10-190819-wwwwebtoonscom-aa64078ba943e7895194e96f853d4d20.png',
+        //   favorite: '80 favorite',
+        // },
       ],
+      id: null,
+      token: null,
+      keyword: '',
     };
   }
+
+  // componentDidMount() {
+  //   axios
+  //     .get(`http:192.168.1.14:5000/api/v1/webtoons`, {
+  //       params: {isFavorite: true},
+  //     })
+  //     .then(res => {
+  //       const data = res.data;
+  //       console.log(data);
+  //       this.setState({banners: data});
+  //     })
+  //     .catch(error => {
+  //       console.log('Api call error');
+  //     });
+  // }
+
+  async componentDidMount() {
+    await this.getToken();
+    await this.getId();
+    this.showFavorite();
+  }
+
+  async getToken() {
+    const getToken = await AsyncStorage.getItem('token');
+    if (getToken !== null) {
+      this.setState({
+        token: getToken,
+      });
+    } else {
+      alert('You Must Login to access this screen');
+      this.props.navigation.navigate('Login');
+    }
+  }
+
+  async getId() {
+    await AsyncStorage.getItem('id').then(key =>
+      this.setState({
+        id: JSON.parse(key),
+      }),
+    );
+  }
+
+  showFavorite = () => {
+    axios({
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+        authorization: `Bearer ${this.state.token}`,
+      },
+      url: `http:192.168.1.23:2019/api/v1/user/${this.state.id}/favorites`,
+    }).then(res => {
+      const banners = res.data;
+      this.setState({banners});
+    });
+  };
 
   render() {
     return (
       <Container>
         <Header searchBar style={{backgroundColor: 'white'}}>
           <Item rounded>
-            <Input placeholder="Search" />
-            <Icon name="ios-search" />
+            <Input
+              placeholder="Search"
+              onChangeText={keyword => this.setState({keyword})}
+            />
+            <Icon
+              name="ios-search"
+              onPress={() =>
+                this.props.navigation.navigate('searchFav', {
+                  keyword: this.state.keyword,
+                })
+              }
+            />
           </Item>
           <Button transparent>
             <Text>Search</Text>
@@ -66,19 +136,26 @@ export default class Favourite extends Component {
                     <View style={{borderWidth: 2}}>
                       <TouchableOpacity
                         onPress={() =>
-                          this.props.navigation.navigate('DetailScreen')
+                          this.props.navigation.navigate('DetailScreen', {
+                            title: item.toonId.title,
+                            image: item.toonId.image,
+                            toonid: item.toonId.id,
+                          })
                         }>
                         <Image
-                          style={{height: 75, width: 75}}
-                          source={{uri: item.image}}
+                          style={{height: 95, width: 95}}
+                          source={{uri: item.toonId.image}}
                         />
                       </TouchableOpacity>
                     </View>
                     <View>
-                      <Text style={{fontWeight: 'bold', margin: 5}}>
+                      {/* <Text style={{fontWeight: 'bold', margin: 5}}>
                         {item.title}
+                      </Text> */}
+                      <Text
+                        style={{margin: 5, fontWeight: 'bold', fontSize: 18}}>
+                        {item.toonId.title}
                       </Text>
-                      <Text style={{margin: 5}}>{item.favorite}</Text>
                     </View>
                   </Row>
                 </View>
@@ -96,11 +173,13 @@ export default class Favourite extends Component {
             </Button>
             <Button onPress={() => this.props.navigation.navigate('Favourite')}>
               <Icon name="star" style={{color: 'green'}} />
-              <Text style={{color: 'green'}}>Faourites</Text>
+              <Text style={{color: 'green', fontWeight: 'bold'}}>
+                Favorites
+              </Text>
             </Button>
             <Button onPress={() => this.props.navigation.navigate('profile')}>
               <Icon name="person" style={{color: 'black'}} />
-              <Text style={{color: 'black'}}>profile</Text>
+              <Text style={{color: 'black'}}>Profile</Text>
             </Button>
           </FooterTab>
         </Footer>

@@ -14,6 +14,8 @@ import {
 } from 'native-base';
 import {Image, StyleSheet, SafeAreaView, Text} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import AsyncStorage from '@react-native-community/async-storage';
+import axios from 'axios';
 
 export default class EditProfile extends Component {
   static navigationOptions = {header: null};
@@ -21,12 +23,40 @@ export default class EditProfile extends Component {
   constructor() {
     super();
     this.state = {
-      data: {name: 'Rizky Ariananda H'},
-      image: {
-        uri:
-          'https://icon-library.net/images/profile-png-icon/profile-png-icon-1.jpg',
-      },
+      datas: [],
+      avatar: '',
+      token: '',
+      id: null,
+      name: '',
     };
+  }
+
+  async componentDidMount() {
+    await this.getToken();
+    await this.getId();
+    await axios
+      .get(`http:192.168.1.8:2019/api/v1/user/${this.state.id}`)
+      .then(res => {
+        const datas = res.data;
+        this.setState({datas});
+        console.log(datas);
+      });
+  }
+
+  async getToken() {
+    await AsyncStorage.getItem('token').then(key =>
+      this.setState({
+        token: key,
+      }),
+    );
+  }
+
+  async getId() {
+    await AsyncStorage.getItem('id').then(key =>
+      this.setState({
+        id: JSON.parse(key),
+      }),
+    );
   }
 
   handleChoosePhoto = () => {
@@ -34,7 +64,6 @@ export default class EditProfile extends Component {
       title: 'Choose Photo',
       storageOptions: {
         skipBackup: true,
-        path: 'images',
       },
     };
     ImagePicker.showImagePicker(options, response => {
@@ -51,12 +80,47 @@ export default class EditProfile extends Component {
           name: response.fileName,
         };
         const source = tmpPhoto;
+        console.log(source);
+
         this.setState({
-          image: source,
+          avatar: source,
         });
       }
     });
   };
+
+  async confirm() {
+    const createFormData = (avatar, body) => {
+      const data = new FormData();
+
+      data.append('image', {
+        name: avatar.fileName,
+        type: avatar.type,
+        uri: avatar.uri,
+      });
+
+      Object.keys(body).forEach(key => {
+        data.append(key, body[key]);
+      });
+      console.log('data', data);
+      return data;
+    };
+    await axios
+      .put(
+        `http:192.168.1.23:2019/api/v1/user/${this.state.id}`,
+        createFormData(this.state.avatar, {name: this.state.name}),
+      )
+      .then(response => {
+        console.log('upload success', response);
+        alert('Data diupdate');
+        this.setState({avatar: ''});
+        this.props.navigation.navigate('profile');
+      })
+      .catch(error => {
+        console.log('upload error', error);
+        alert('upload failed');
+      });
+  }
 
   render() {
     return (
@@ -78,7 +142,7 @@ export default class EditProfile extends Component {
             <Icon
               name="md-checkmark"
               onPress={() => {
-                alert('Data succesfully changed');
+                this.confirm();
               }}
               style={{marginRight: 10, color: 'green'}}
             />
@@ -88,7 +152,7 @@ export default class EditProfile extends Component {
           <SafeAreaView style={{alignItems: 'center'}}>
             <Image
               style={styles.profileImg}
-              source={{uri: this.state.image.uri}}
+              source={{uri: this.state.avatar.uri}}
             />
             <Icon
               style={{
@@ -104,13 +168,12 @@ export default class EditProfile extends Component {
           </SafeAreaView>
           <SafeAreaView style={{marginVertical: 15}}>
             <View style={{alignItems: 'center'}}>
-              <Item>
+              <Item style={{borderWidth: 2}}>
                 <Input
                   style={styles.input}
-                  onChangeText={text =>
-                    this.setState({data: {...this.state.data, name: text}})
-                  }
-                  value={this.state.data.name}
+                  onChangeText={text => this.setState({name: text})}
+                  value={this.state.name}
+                  placeholder={this.state.datas.name}
                 />
               </Item>
             </View>
@@ -137,6 +200,7 @@ const styles = StyleSheet.create({
     height: 200,
     width: 200,
     borderRadius: 100,
+    borderWidth: 3,
   },
   input: {
     textAlign: 'center',
@@ -146,6 +210,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     padding: 10,
     color: '#000',
-    borderRadius: 15,
+    borderWidth: 2,
   },
 });

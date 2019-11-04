@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import axios from 'axios';
 import {
   View,
   Text,
@@ -10,40 +11,54 @@ import {
 import {Container, Content, Header, Footer, Row, Icon} from 'native-base';
 
 export default class DetailScreen extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       details: [
-        {
-          ep: 'Ep.4',
-          date: '07 October 2019',
-          image:
-            'https://cdn.imagecomics.com/assets/i/releases/3344/rose-vol-1-tp_65f5bec524.jpg',
-          content: [
-            'https://2.bp.blogspot.com/jXtASSEPGQ8rQCyfOxQPwWdIFBWByzZ4yJMbvO3_MlXVu-mvtg7IE8JIvzuln_elP7u62C7WVQ19WLeICUUhxyS05bYBus9RAedX7xg2gieWoVMSy5KD-PxVsIAPbkgv5coYZJtCAw=s1600',
-            'https://2.bp.blogspot.com/ZEzW7QKkvF1FcYUzLBiJlcluPtAVXV5GLUreHLgdsAI5eqknV1ONNZEuTJxFUJ0OgP40MiLGYpP2Q-7cjnELPBJhExRnjuqFchrO2rt6bMDgDp8GWa9Xoz8IH_OUOKcI8Pf1XaopLA=s1600',
-          ],
-        },
-        {
-          ep: 'Ep.3',
-          date: '06 October 2019',
-          image:
-            'https://images-na.ssl-images-amazon.com/images/I/A1PP0yoz%2BbL.jpg',
-        },
-        {
-          ep: 'Ep.2',
-          date: '05 October 2019',
-          image:
-            'https://images-na.ssl-images-amazon.com/images/I/61mv4EJj9wL._SX331_BO1,204,203,200_.jpg',
-        },
-        {
-          ep: 'Ep.1',
-          date: '04 October 2019',
-          image:
-            'https://images-na.ssl-images-amazon.com/images/I/612bK1krzxL._SX319_BO1,204,203,200_.jpg',
-        },
+        // {
+        //   ep: 'Ep.4',
+        //   date: '07 October 2019',
+        //   image:
+        //     'https://cdn.imagecomics.com/assets/i/releases/3344/rose-vol-1-tp_65f5bec524.jpg',
+        //   content: [
+        //     'https://2.bp.blogspot.com/jXtASSEPGQ8rQCyfOxQPwWdIFBWByzZ4yJMbvO3_MlXVu-mvtg7IE8JIvzuln_elP7u62C7WVQ19WLeICUUhxyS05bYBus9RAedX7xg2gieWoVMSy5KD-PxVsIAPbkgv5coYZJtCAw=s1600',
+        //     'https://2.bp.blogspot.com/ZEzW7QKkvF1FcYUzLBiJlcluPtAVXV5GLUreHLgdsAI5eqknV1ONNZEuTJxFUJ0OgP40MiLGYpP2Q-7cjnELPBJhExRnjuqFchrO2rt6bMDgDp8GWa9Xoz8IH_OUOKcI8Pf1XaopLA=s1600',
+        //   ],
+        // },
+        // {
+        //   ep: 'Ep.3',
+        //   date: '06 October 2019',
+        //   image:
+        //     'https://images-na.ssl-images-amazon.com/images/I/A1PP0yoz%2BbL.jpg',
+        // },
+        // {
+        //   ep: 'Ep.2',
+        //   date: '05 October 2019',
+        //   image:
+        //     'https://images-na.ssl-images-amazon.com/images/I/61mv4EJj9wL._SX331_BO1,204,203,200_.jpg',
+        // },
+        // {
+        //   ep: 'Ep.1',
+        //   date: '04 October 2019',
+        //   image:
+        //     'https://images-na.ssl-images-amazon.com/images/I/612bK1krzxL._SX319_BO1,204,203,200_.jpg',
+        // },
       ],
+      id: props.navigation.getParam('toonid'),
     };
+  }
+
+  componentDidMount() {
+    axios
+      .get(`http:192.168.1.8:2019/api/v1/webtoon/${this.state.id}/episodes`)
+      .then(res => {
+        const data = res.data;
+        console.log(data);
+        this.setState({details: data});
+      })
+      .catch(error => {
+        console.log('Api call error');
+      });
   }
 
   //Settingan untuk header
@@ -96,10 +111,10 @@ export default class DetailScreen extends Component {
                       style={{borderWidth: 2, margin: 7}}
                       onPress={() =>
                         this.props.navigation.navigate('DetailEp', {
-                          arr: item.details,
-                          title: item.ep,
-                          pic: item.image,
-                          image: item.content,
+                          title: item.episode,
+                          image: item.image,
+                          toonid: this.props.navigation.getParam('toonid'),
+                          epiId: item.id,
                         })
                       }>
                       <Image
@@ -108,8 +123,8 @@ export default class DetailScreen extends Component {
                       />
                     </TouchableOpacity>
                     <View style={{margin: 5}}>
-                      <Text style={{fontWeight: 'bold'}}>{item.ep}</Text>
-                      <Text>{item.date}</Text>
+                      <Text style={{fontWeight: 'bold'}}>{item.episode}</Text>
+                      <Text>{item.createdAt}</Text>
                     </View>
                   </Row>
                 </View>

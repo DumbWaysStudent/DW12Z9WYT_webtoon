@@ -57,7 +57,7 @@ export default class CreateWebtoon extends Component {
             <TouchableOpacity>
               <Icon
                 name="arrow-back"
-                onPress={() => this.props.navigation.navigate('CreateEpi')}
+                onPress={() => this.props.navigation.navigate('Mywebtoon')}
               />
             </TouchableOpacity>
           </Left>

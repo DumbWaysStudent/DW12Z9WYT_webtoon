@@ -27,8 +27,11 @@ import CreateWebtoon from './src/components/Profile/CreateWebtoon';
 import CreateEpi from './src/components/Profile/CreateEpisode';
 import EditWebtoon from './src/components/Profile/EditWebtoon';
 import EditEpisode from './src/components/Profile/EditEpisode';
+import Register from './src/components/Register/Register';
+import searchWebtoon from './src/components/ForYou/searchWebtoon';
+import searchFav from './src/components/Favourite/searchFav';
 
-const AuthStack = createStackNavigator({Login: Login});
+const AuthStack = createStackNavigator({Login});
 const AppStack = createStackNavigator({
   ForYou: ForYou,
   Favourite: Favourite,
@@ -41,6 +44,9 @@ const AppStack = createStackNavigator({
   CreateEpi: CreateEpi,
   EditWebtoon: EditWebtoon,
   EditEpisode: EditEpisode,
+  Register: Register,
+  searchWebtoon: searchWebtoon,
+  searchFav: searchFav,
 });
 
 export default createAppContainer(
@@ -50,7 +56,17 @@ export default createAppContainer(
       Auth: AuthStack,
     },
     {
-      initialRouteName: 'Auth',
+      initialRouteName: 'App',
     },
   ),
 );
+
+// const App = () => {
+//   return (
+//     <Provider store={store}>
+//       <RootNavigation />
+//     </Provider>
+//   );
+// };
+
+// export default App;

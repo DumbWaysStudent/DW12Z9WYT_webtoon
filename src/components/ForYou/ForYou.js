@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import axios from 'axios';
 import {
   Container,
   Content,
@@ -22,43 +23,109 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Carousel from 'react-native-banner-carousel';
-
+import AsyncStorage from '@react-native-community/async-storage';
 const BannerWidth = Dimensions.get('window').width;
 const BannerHeight = 180;
 
 export default class ForYou extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       banners: [
-        {
-          title: 'The Secret of Angel',
-          image:
-            'https://akcdn.detik.net.id/community/media/visual/2019/04/03/dac43146-7dd4-49f4-89ca-d81f57b070fc.jpeg?w=770&q=90',
-        },
-        {
-          title: 'Pasutri Gaje',
-          image:
-            'https://4.bp.blogspot.com/-7RzHQQanlqY/XE7r94lzUCI/AAAAAAAACqI/keHhTWrJ1441h7vHWIL_FNf912DnsRMbQCLcBGAs/s1600/Pasutri%2BGaje%2BSeason%2B2%2BAnissa%2BNisfihani%2BWebtoon%2BIndonesia.JPG',
-        },
-        {
-          title: 'Young Mom',
-          image:
-            'https://cdn.idntimes.com/content-images/community/2019/03/opera-snapshot-2019-03-10-190819-wwwwebtoonscom-aa64078ba943e7895194e96f853d4d20.png',
-        },
-        {
-          title: 'Killstagram',
-          image:
-            'https://swebtoon-phinf.pstatic.net/20190510_14/1557483424696HgCs5_JPEG/thumb_ipad.jpg',
-        },
-        {
-          title: 'The Girls Are Monster',
-          image:
-            'https://swebtoon-phinf.pstatic.net/20190418_73/15555671541411jrkc_JPEG/thumb_ipad.jpg',
-        },
+        // {
+        //   title: 'The Secret of Angel',
+        //   image:
+        //     'https://akcdn.detik.net.id/community/media/visual/2019/04/03/dac43146-7dd4-49f4-89ca-d81f57b070fc.jpeg?w=770&q=90',
+        // },
+        // {
+        //   title: 'Pasutri Gaje',
+        //   image:
+        //     'https://4.bp.blogspot.com/-7RzHQQanlqY/XE7r94lzUCI/AAAAAAAACqI/keHhTWrJ1441h7vHWIL_FNf912DnsRMbQCLcBGAs/s1600/Pasutri%2BGaje%2BSeason%2B2%2BAnissa%2BNisfihani%2BWebtoon%2BIndonesia.JPG',
+        // },
+        // {
+        //   title: 'Young Mom',
+        //   image:
+        //     'https://cdn.idntimes.com/content-images/community/2019/03/opera-snapshot-2019-03-10-190819-wwwwebtoonscom-aa64078ba943e7895194e96f853d4d20.png',
+        // },
+        // {
+        //   title: 'Killstagram',
+        //   image:
+        //     'https://swebtoon-phinf.pstatic.net/20190510_14/1557483424696HgCs5_JPEG/thumb_ipad.jpg',
+        // },
+        // {
+        //   title: 'The Girls Are Monster',
+        //   image:
+        //     'https://swebtoon-phinf.pstatic.net/20190418_73/15555671541411jrkc_JPEG/thumb_ipad.jpg',
+        // },
       ],
+      keyword: '',
+      token: '',
+      favorites: [],
+      id: null,
     };
   }
+
+  async componentDidMount() {
+    await this.getToken();
+    await this.getId();
+    axios
+      .get(`http:192.168.1.8:2019/api/v1/webtoons`)
+      .then(res => {
+        const data = res.data;
+        console.log(data);
+        console.log(this.state.id);
+        this.setState({banners: data});
+      })
+      .catch(error => {
+        console.log('Api call error');
+      });
+    this.showFavorite();
+  }
+
+  async getToken() {
+    await AsyncStorage.getItem('token').then(key =>
+      this.setState({
+        token: key,
+      }),
+    );
+  }
+
+  async getId() {
+    await AsyncStorage.getItem('id').then(key =>
+      this.setState({
+        id: JSON.parse(key),
+      }),
+    );
+  }
+
+  showFavorite = () => {
+    axios({
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+        authorization: `Bearer ${this.state.token}`,
+      },
+      url: `http:192.168.1.8:2019/api/v1/user/${this.state.id}/favorites`,
+    }).then(res => {
+      const favorites = res.data;
+      this.setState({favorites});
+      console.log(this.state.favorites);
+    });
+  };
+
+  createFav = id => {
+    axios({
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        authorization: `Bearer ${this.state.token}`,
+      },
+      url: `http:192.168.1.8:2019/api/v1/user/${this.state.id}/favorite`,
+      data: {
+        webtoon_id: id,
+      },
+    }).then(this.showFavorite());
+  };
 
   static navigationOptions = {header: null};
 
@@ -82,8 +149,18 @@ export default class ForYou extends Component {
       <Container>
         <Header searchBar style={{backgroundColor: 'white'}}>
           <Item rounded>
-            <Input placeholder="Search" />
-            <Icon name="ios-search" />
+            <Input
+              placeholder="Search"
+              onChangeText={keyword => this.setState({keyword})}
+            />
+            <Icon
+              name="ios-search"
+              onPress={() =>
+                this.props.navigation.navigate('searchWebtoon', {
+                  keyword: this.state.keyword,
+                })
+              }
+            />
           </Item>
           <Button transparent>
             <Text>Search</Text>
@@ -94,7 +171,7 @@ export default class ForYou extends Component {
           <View style={styles.container}>
             <Carousel
               autoplay
-              autoplayTimeout={3000} //gambar berpindah dalam 3 detik
+              autoplayTimeout={3000}
               loop
               index={0}
               pageSize={BannerWidth}>
@@ -111,34 +188,33 @@ export default class ForYou extends Component {
                 fontWeight: 'bold',
                 borderBottomWidth: 2,
               }}>
-              Favourite
+              Favorite
             </Text>
             <ScrollView horizontal={true}>
-              {/* Gambar yang akan ditampilkan menyamping karena memakai attribut horizontal true */}
-              {this.state.banners.map(image => (
+              {this.state.favorites.map(image => (
                 <View
                   style={{
-                    flex: 1,
                     width: 100,
-                    alignSelf: 'center',
+                    flex: 1,
+                    margin: 5,
                   }}>
-                  <View>
+                  <View style={{borderWidth: 2}}>
                     <TouchableOpacity
                       onPress={() =>
                         this.props.navigation.navigate('DetailScreen', {
-                          title: image.title,
-                          image: image.image,
+                          title: image.toonId.title,
+                          image: image.toonId.image,
+                          toonid: image.toonId.id,
                         })
                       }>
                       <Image
-                        style={{width: 75, height: 75, resizeMode: 'contain'}}
-                        // Gambar harus selalu diberi height dan weight, jika tidak maka gambar tidak muncul
-                        source={{uri: image.image}}
+                        style={{width: 95, height: 95}}
+                        source={{uri: image.toonId.image}}
                       />
                     </TouchableOpacity>
                   </View>
                   <View>
-                    <Text style={{fontSize: 13}}>{image.title}</Text>
+                    <Text style={{fontSize: 13}}>{image.toonId.title}</Text>
                   </View>
                 </View>
               ))}
@@ -163,12 +239,20 @@ export default class ForYou extends Component {
                       this.props.navigation.navigate('DetailScreen', {
                         title: image.title,
                         image: image.image,
+                        toonid: image.id,
                       })
                     }>
-                    <Image
-                      style={{width: 75, height: 75, margin: 7, borderWidth: 5}}
-                      source={{uri: image.image}}
-                    />
+                    <View style={{borderWidth: 1, margin: 5}}>
+                      <Image
+                        style={{
+                          width: 75,
+                          height: 75,
+                          margin: 1,
+                          borderWidth: 5,
+                        }}
+                        source={{uri: image.image}}
+                      />
+                    </View>
                   </TouchableOpacity>
                   <View style={{marginLeft: 13, justifyContent: 'center'}}>
                     <Text
@@ -179,8 +263,11 @@ export default class ForYou extends Component {
                       }}>
                       {image.title}
                     </Text>
-                    <Button warning small>
-                      <Text style={{color: 'black'}}>+ Favourite</Text>
+                    <Button
+                      warning
+                      small
+                      onPress={() => this.createFav(image.id)}>
+                      <Text style={{color: 'black'}}>+ Favorite</Text>
                     </Button>
                   </View>
                 </Row>
@@ -192,15 +279,15 @@ export default class ForYou extends Component {
           <FooterTab style={{backgroundColor: 'white', borderTopWidth: 1}}>
             <Button onPress={() => this.props.navigation.navigate('ForYou')}>
               <Icon name="apps" style={{color: 'green'}} />
-              <Text style={{color: 'green'}}>For You</Text>
+              <Text style={{color: 'green', fontWeight: 'bold'}}>For You</Text>
             </Button>
             <Button onPress={() => this.props.navigation.navigate('Favourite')}>
               <Icon name="star" style={{color: 'black'}} />
-              <Text style={{color: 'black'}}>Faourites</Text>
+              <Text style={{color: 'black'}}>Favorites</Text>
             </Button>
             <Button onPress={() => this.props.navigation.navigate('profile')}>
               <Icon name="person" style={{color: 'black'}} />
-              <Text style={{color: 'black'}}>profile</Text>
+              <Text style={{color: 'black'}}>Profile</Text>
             </Button>
           </FooterTab>
         </Footer>

@@ -12,9 +12,67 @@ import {
   Right,
   Title,
 } from 'native-base';
+import AsyncStorage from '@react-native-community/async-storage';
+import axios from 'axios';
 
 export default class Profile extends Component {
   static navigationOptions = {header: null};
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      entries: [],
+      token: '',
+      id: null,
+    };
+  }
+
+  async componentDidMount() {
+    await this.getToken();
+    await this.getId();
+    await this.getUserData();
+  }
+
+  getUserData() {
+    axios({
+      method: 'GET',
+      // headers: {
+      //   'content-type': 'application/json',
+      //   authorization: `Bearer ${this.state.token}`,
+      // },
+      url: `http:192.168.1.8:2019/api/v1/user/${this.state.id}`,
+    }).then(res => {
+      const entries = res.data;
+      this.setState({entries});
+      console.log(this.state.entries);
+    });
+  }
+
+  async getToken() {
+    const getToken = await AsyncStorage.getItem('token');
+    if (getToken !== null) {
+      this.setState({
+        token: getToken,
+      });
+    } else {
+      alert('You Must Login to access this screen');
+      this.props.navigation.navigate('Login');
+    }
+  }
+
+  async getId() {
+    await AsyncStorage.getItem('id').then(key =>
+      this.setState({
+        id: JSON.parse(key),
+      }),
+    );
+  }
+
+  async logout() {
+    await AsyncStorage.removeItem('token');
+    this.props.navigation.navigate('Login');
+  }
+
   render() {
     return (
       <Container>
@@ -31,8 +89,14 @@ export default class Profile extends Component {
           <Right>
             <Icon
               name="md-create"
-              onPress={() => this.props.navigation.navigate('EditProfile')}
+              //onPress={() => this.props.navigation.navigate('EditProfile')}
               style={{marginRight: 10, color: 'orange'}}
+              onPress={() =>
+                this.props.navigation.navigate('EditProfile', {
+                  pic: this.state.entries.avatar,
+                  username: this.state.entries.name,
+                })
+              }
             />
           </Right>
         </Header>
@@ -40,10 +104,7 @@ export default class Profile extends Component {
         <Content>
           <View>
             <Image
-              source={{
-                uri:
-                  'https://icon-library.net/images/profile-png-icon/profile-png-icon-1.jpg',
-              }}
+              source={{uri: this.state.entries.avatar}}
               style={{
                 alignSelf: 'center',
                 height: 200,
@@ -53,27 +114,45 @@ export default class Profile extends Component {
             />
           </View>
           <Text style={{alignSelf: 'center', fontSize: 22, fontWeight: 'bold'}}>
-            Your Name
+            Welcome,{this.state.entries.name}
+          </Text>
+          <Text style={{alignSelf: 'center', fontSize: 22, fontWeight: 'bold'}}>
+            {this.state.entries.email}
           </Text>
           <Button
             onPress={() => this.props.navigation.navigate('MyWebtoon')}
             style={{
               backgroundColor: 'white',
-              marginTop: 5,
+              marginHorizontal: 30,
+              marginVertical: 5,
+              borderRadius: 8,
               borderWidth: 1,
               borderColor: 'black',
             }}>
-            <Text style={{color: 'black'}}>My WebToon creation</Text>
+            <View style={{justifyContent: 'center'}}>
+              <Text
+                style={{marginLeft: 90, color: 'black', fontWeight: 'bold'}}>
+                My WebToon creation
+              </Text>
+            </View>
           </Button>
           <Button
-            onPress={() => this.props.navigation.navigate('Login')}
+            //onPress={() => this.props.navigation.navigate('Login')}
+            onPress={() => this.logout()}
             style={{
               backgroundColor: 'white',
-              marginTop: 5,
+              marginVertical: 5,
+              marginHorizontal: 30,
               borderWidth: 1,
               borderColor: 'black',
+              borderRadius: 8,
             }}>
-            <Text style={{color: 'black'}}>Logout</Text>
+            <View>
+              <Text
+                style={{marginLeft: 135, color: 'black', fontWeight: 'bold'}}>
+                Logout
+              </Text>
+            </View>
           </Button>
         </Content>
 
@@ -85,11 +164,11 @@ export default class Profile extends Component {
             </Button>
             <Button onPress={() => this.props.navigation.navigate('Favourite')}>
               <Icon name="star" style={{color: 'black'}} />
-              <Text style={{color: 'black'}}>Faourites</Text>
+              <Text style={{color: 'black'}}>Favorites</Text>
             </Button>
             <Button onPress={() => this.props.navigation.navigate('profile')}>
               <Icon name="person" style={{color: 'green'}} />
-              <Text style={{color: 'green'}}>profile</Text>
+              <Text style={{color: 'green', fontWeight: 'bold'}}>Profile</Text>
             </Button>
           </FooterTab>
         </Footer>

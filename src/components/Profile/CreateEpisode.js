@@ -91,7 +91,7 @@ export default class CreateEpi extends Component {
                     </TouchableOpacity>
                   </View>
 
-                  <View style={{justifyContent: 'center', margin: 7}}>
+                  <View style={{margin: 7}}>
                     <Text
                       style={{
                         fontSize: 18,
@@ -100,9 +100,13 @@ export default class CreateEpi extends Component {
                       }}>
                       {item.ep}
                     </Text>
-                    <View style={{borderWidth: 2}}>
+                    <View style={{flex: 1}}>
                       <Button
-                        style={{backgroundColor: 'red'}}
+                        style={{
+                          backgroundColor: 'red',
+                          borderWidth: 2,
+                          borderColor: 'black',
+                        }}
                         onPress={() => alert('Data has been deleted')}>
                         <Text>Delete</Text>
                       </Button>
@@ -121,9 +125,10 @@ export default class CreateEpi extends Component {
               borderColor: 'black',
               justifyContent: 'center',
               marginTop: 12,
+              backgroundColor: 'green',
             }}
             onPress={() => alert('Image has been added')}>
-            <Text>+ Image</Text>
+            <Text style={{color: 'white'}}>+ Image</Text>
           </Button>
         </Content>
       </Container>
